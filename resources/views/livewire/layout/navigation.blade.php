@@ -33,6 +33,19 @@ new class extends Component
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    
+                    @if (auth()->user()->isPatient())
+                        <x-nav-link :href="route('patient.medications')" :active="request()->routeIs('patient.medications')" wire:navigate>
+                            {{ __('My Medications') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('patient.adherence')" :active="request()->routeIs('patient.adherence')" wire:navigate>
+                            {{ __('Adherence Log') }}
+                        </x-nav-link>
+                    @elseif (auth()->user()->isDoctor())
+                        <x-nav-link :href="route('doctor.dashboard')" :active="request()->routeIs('doctor.*')" wire:navigate>
+                            {{ __('Patients') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -84,6 +97,19 @@ new class extends Component
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            
+            @if (auth()->user()->isPatient())
+                <x-responsive-nav-link :href="route('patient.medications')" :active="request()->routeIs('patient.medications')" wire:navigate>
+                    {{ __('My Medications') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('patient.adherence')" :active="request()->routeIs('patient.adherence')" wire:navigate>
+                    {{ __('Adherence Log') }}
+                </x-responsive-nav-link>
+            @elseif (auth()->user()->isDoctor())
+                <x-responsive-nav-link :href="route('doctor.dashboard')" :active="request()->routeIs('doctor.*')" wire:navigate>
+                    {{ __('Patients') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

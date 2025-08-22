@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,5 +45,30 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isPatient(): bool
+    {
+        return $this->role === 'patient';
+    }
+
+    public function isDoctor(): bool
+    {
+        return $this->role === 'doctor';
+    }
+
+    public function medications()
+    {
+        return $this->hasMany(Medication::class, 'patient_id');
+    }
+
+    public function patients()
+    {
+        return $this->belongsToMany(User::class, 'doctor_patient', 'doctor_id', 'patient_id');
+    }
+
+    public function doctors()
+    {
+        return $this->belongsToMany(User::class, 'doctor_patient', 'patient_id', 'doctor_id');
     }
 }
