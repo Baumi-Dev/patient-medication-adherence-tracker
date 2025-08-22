@@ -14,6 +14,7 @@ new #[Layout('layouts.guest')] class extends Component
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
+    public string $role = 'patient';
 
     /**
      * Handle an incoming registration request.
@@ -24,6 +25,7 @@ new #[Layout('layouts.guest')] class extends Component
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'in:patient,doctor'],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -73,6 +75,22 @@ new #[Layout('layouts.guest')] class extends Component
                             name="password_confirmation" required autocomplete="new-password" />
 
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <!-- Role -->
+        <div class="mt-4">
+            <x-input-label for="role" :value="__('I am a')" />
+            <div class="mt-2 space-y-2">
+                <label class="inline-flex items-center">
+                    <input wire:model="role" type="radio" name="role" value="patient" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Patient') }}</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input wire:model="role" type="radio" name="role" value="doctor" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" />
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Doctor') }}</span>
+                </label>
+            </div>
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
         <div class="flex items-center justify-end mt-4">
